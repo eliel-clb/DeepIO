@@ -1,0 +1,8 @@
+backend/venv
+db_config.txt
+backend/__pycache__
+backend/controllers/__pycache__
+backend/models/__pycache__
+.ipynb_checkpoints
+*.swp
+**/__pycache__/

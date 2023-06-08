@@ -1,0 +1,14 @@
+Werkzeug
+pandas
+rpy2
+jsonschema
+numpy
+Flask
+Keras
+flask-bcrypt
+flask-cors
+flask-jwt-extended
+Flask-Mail
+Flask-PyMongo
+pymongo
+

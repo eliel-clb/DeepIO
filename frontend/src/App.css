@@ -1,0 +1,53 @@
+body {
+  font-family: 'Open Sans',Arial,Helvetica,sans-serif;
+  color: #544b48;
+  background-color: #dbd0cc;
+}
+
+#wrapper {
+  margin: 0 auto;
+  max-width: 1224px;
+  background-color: #ffffff;
+  min-height: 101vh;
+  font-size: 14px;
+  font-size: 1.4rem;
+  position: relative;
+  z-index: 5;
+}
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+}
+
+.App-header {
+  background-color: #282c34;
+  font-size: calc(10px + 2vmin);
+  color: white;
+  margin-bottom: 20px;
+}
+
+.App-link {
+  color: #09d3ac;
+}
+
+.col-centered {
+  float: none;
+  margin: 0 auto;
+}
+
+.hidden {
+  display: none;
+}
+
+.btn-primary {
+  background-color: #00b5ad;
+  border-color: #00b5ad;
+}
+
+a {
+  color: #00b5ad;
+}

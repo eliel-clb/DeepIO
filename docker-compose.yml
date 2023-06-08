@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+
+  ###########################
+  # Setup MongoDB container #
+  ###########################
+  mongo_db:
+    image: mongo:latest
+    container_name: deepio_mongo
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "27018:27017"
+    # environment:
+    #   - MONGO_INITDB_ROOT_USERNAME=$MONGO_USERNAME
+    #   - MONGO_INITDB_ROOT_PASSWORD=$MONGO_PASSWORD
+    #   - MONGO_INITDB_DATABASE=$DATABASE_NAME
+    volumes:
+      - ./database/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - './app_memory/mongo:/data/db'
+
+
+  ###########################
+  # Setup backend container #
+  ###########################
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - ${BACKEND_PORT}:${BACKEND_PORT}
+    expose:
+      - ${BACKEND_PORT}
+    volumes:
+      - ./app_memory/uploads:/app/uploads
+    depends_on:
+      - mongo_db
+
+  ############################
+  # Setup frontend container #
+  ############################
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    expose:
+      - ${FRONTEND_PORT}
+    ports:
+      - ${FRONTEND_PORT}:${FRONTEND_PORT}
+    volumes:
+      - ./app_memory/uploads:/app/public/uploads
+

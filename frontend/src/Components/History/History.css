@@ -1,0 +1,13 @@
+.prediction-item {
+  font-size: 16px;
+}
+
+.prediction-info-left {
+  width: 100px;
+  height: 10px;
+}
+
+#list_group_patient{
+    max-height: 500px;
+    overflow:scroll;
+}
