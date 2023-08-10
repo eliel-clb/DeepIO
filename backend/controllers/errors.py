@@ -1,4 +1,4 @@
-from flask import request, jsonify
+from flask import jsonify
 from application import jwt
 
 # Return various error depending on what type of token error occured

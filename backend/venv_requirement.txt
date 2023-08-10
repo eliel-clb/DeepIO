@@ -1,8 +1,7 @@
-Werkzeug
+numpy
 pandas
 rpy2
 jsonschema
-numpy
 Flask
 Keras
 flask-bcrypt
@@ -11,4 +10,7 @@ flask-jwt-extended
 Flask-Mail
 Flask-PyMongo
 pymongo
+tensorflow
+Werkzeug
+debugpy
 

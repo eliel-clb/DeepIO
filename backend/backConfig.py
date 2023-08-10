@@ -4,7 +4,7 @@ import os
 class BaseConfig(object):
     # Database
     # Slash, @, etc need percent encoding
-    MONGO_URI = "mongodb://"+os.environ['MONGO_USERNAME']+":"+os.environ['MONGO_PASSWORD']+"@mongodb:"+os.environ['MONGO_PORT']+"/"+os.environ['DATABASE_NAME']
+    MONGO_URI = "mongodb://"+os.environ['MONGO_USERNAME']+":"+os.environ['MONGO_PASSWORD']+"@mongo_db:"+os.environ['MONGO_PORT']+"/"+os.environ['DATABASE_NAME']
 
     
     # Token Authentication

@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.7'
 
 services:
 
@@ -9,14 +9,15 @@ services:
     image: mongo:latest
     container_name: deepio_mongo
     restart: always
+    command: mongod --port ${MONGO_PORT}
     env_file:
       - .env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+      MONGO_INITDB_DATABASE: ${DATABASE_NAME}
     ports:
-      - "27018:27017"
-    # environment:
-    #   - MONGO_INITDB_ROOT_USERNAME=$MONGO_USERNAME
-    #   - MONGO_INITDB_ROOT_PASSWORD=$MONGO_PASSWORD
-    #   - MONGO_INITDB_DATABASE=$DATABASE_NAME
+      - ${MONGO_PORT}:${MONGO_PORT}
     volumes:
       - ./database/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
       - './app_memory/mongo:/data/db'
@@ -38,8 +39,30 @@ services:
       - ${BACKEND_PORT}
     volumes:
       - ./app_memory/uploads:/app/uploads
+      - './backend:/app'
     depends_on:
       - mongo_db
+  ###########################
+  # Setup backend container #
+  ###########################
+  mongo-express: 
+    image: mongo-express
+    restart: always
+    container_name: mongo_ui
+    ports:
+      - 8081:8081
+    environment:
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=${MONGO_USERNAME}
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=${MONGO_PASSWORD}
+      - ME_CONFIG_BASICAUTH_USERNAME=${MONGOEXPRESS_USERNAME}
+      - ME_CONFIG_BASICAUTH_PASSWORD=${MONGOEXPRESS_PASSWORD}
+      - ME_CONFIG_MONGODB_SERVER=deepio_mongo
+      - ME_CONFIG_MONGODB_PORT="27017"
+    depends_on:
+      - mongo_db
+    volumes:
+      - ./mongo_express/data:/app/mongo_express
+
 
   ############################
   # Setup frontend container #
