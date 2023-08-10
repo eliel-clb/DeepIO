@@ -1,4 +1,4 @@
-import React from "react";
+import React , {useState} from "react";
 import './Login.css';
 import APIClient from '../../Actions/apiClient';
 import { useNavigate } from "react-router-dom";
@@ -16,7 +16,7 @@ const Login = () => {
   const [passwordSecurityError, setPasswordSecurityError] = useState(false);
   const [wrongCredentials, setWrongCredentials] = useState(false);
   const [otherError, setOtherError] = useState(false);
-  const apiClient = new APIClient()
+  const apiClient = APIClient()
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;

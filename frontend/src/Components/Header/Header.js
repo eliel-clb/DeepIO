@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { withTranslation, useTranslation } from 'react-i18next';
 
 
-import logo from '../../Static/Images/clb_logo.svg';
+import logo from '../../Static/Images/LOGOCLB.png';
 import flag_fr from '../../Static/Images/fr_flag_icon.png';
 import flag_gb from '../../Static/Images/uk_flag_icon.png';
 
@@ -19,13 +19,13 @@ import flag_gb from '../../Static/Images/uk_flag_icon.png';
 const Header = () => {
   const [userIsLoggedIn, setUserLoggedIn] = useState(false);
   const [showBanner, setShowBanner] = useState(true);
-  const apiClient = new APIClient;
+  const apiClient = APIClient;
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
 
   useEffect(() => {
     apiClient.getAuth().then((data) =>
-      setUserLoggedIn(True)
+      setUserLoggedIn(true)
     ).catch((err) => {
       console.log(err);
     })

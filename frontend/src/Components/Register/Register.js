@@ -1,15 +1,15 @@
-import React from "react";
+import React, {useState} from "react";
 import { withRouter } from 'react-router';
 import './Register.css';
 import APIClient from '../../Actions/apiClient';
 import { useNavigate } from "react-router-dom";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { useNavigate } from "react-router-dom";
+
 import { useTranslation, withTranslation } from 'react-i18next';
 
 const Register = (props) => {
-  const { t } = useTranslation();
+  const { t , i18n } = useTranslation();
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
@@ -20,12 +20,13 @@ const Register = (props) => {
   const [otherError, setOtherError] = useState(false);
   const [userLocation, setUserLocation] = useState(null);
 
-  const apiClient = new APIClient();
-  navigate = useNavigate();
+  const apiClient = APIClient();
+  const navigate = useNavigate();
 
 
   const handleInputChange = (event) => {
     const { value, name } = event.target;
+  
     switch (name) {
       case 'email':
         setEmail(value);
@@ -39,8 +40,11 @@ const Register = (props) => {
       case 'passwordRepeat':
         setPasswordRepeat(value);
         break;
+      default:
+        break;
     }
   };
+  
 
 
   const resetIndicators = () => {
@@ -101,7 +105,7 @@ const Register = (props) => {
               placeholder={t('register.emailplaceholder')}
               name='email'
               value={email}
-              onChange={handleInputChange(e)}
+              onChange={e => handleInputChange(e)}
               required
             />
             <Form.Text className="text-muted">
@@ -116,7 +120,7 @@ const Register = (props) => {
               placeholder={t('register.nameplaceholder')}
               name='name'
               value={name}
-              onChange={handleInputChange(e)}
+              onChange={e => handleInputChange(e)}
               required
             />
             <Form.Text className="text-muted">
@@ -131,7 +135,7 @@ const Register = (props) => {
               placeholder={t('register.passwordplaceholder')}
               name='password'
               value={password}
-              onChange={handleInputChange}
+              onChange={e => handleInputChange(e)}
               required
             />
 
@@ -140,7 +144,7 @@ const Register = (props) => {
               type="password"
               placeholder={t('register.repeatpasswordplaceholder')}
               name='passwordRepeat'
-              value={thispasswordRepeat}
+              value={passwordRepeat}
               onChange={handleInputChange}
               required
             />

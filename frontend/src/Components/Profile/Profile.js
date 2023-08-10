@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import './Profile.css';
 import APIClient from '../../Actions/apiClient';
 
@@ -6,7 +6,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from "react-router-dom";
 
-import { withTranslation } from 'react-i18next';
+import { withTranslation, useTranslation } from 'react-i18next';
 import i18n from "i18next";
 
 const Profile = () => {
@@ -26,6 +26,7 @@ const Profile = () => {
   const [emailAlreadyUsed, setEmailAlreadyUsed] = useState(false);
   const [emailMismatch, setEmailMismatch] = useState(false);
   const [otherError, setOtherError] = useState(false);
+  const [wrongCredentials, setWrongCredentials] = useState(true);
 
   const [isPasswordOpen, setIsPasswordOpen] = useState(false);
   const [isUsernameOpen, setIsUsernameOpen] = useState(false);
@@ -34,8 +35,8 @@ const Profile = () => {
   const [passwordChangeSuccess, setPasswordChangeSuccess] = useState(false);
   const [emailChangeSuccess, setEmailChangeSuccess] = useState(false);
 
-  const apiClient = new APIClient();
-  navigate = useNavigate();
+  const apiClient = APIClient();
+  const navigate = useNavigate();
   const { t } = useTranslation();
 
 
@@ -77,7 +78,7 @@ const Profile = () => {
   const resetIndicators = () => {
 
     setPasswordSecurityError(false);
-    setwrongCredentials(false);
+    setWrongCredentials(false);
     setOtherError(false);
 
   }

@@ -27,7 +27,7 @@ const Predict = () => {
   const [noFileError, setNoFileError] = useState(false);
   const [uploadError, setUploadError] = useState(false);
   const [deleteError, setDeleteError] = useState(false);
-  const apiClient = new APIClient();
+  const apiClient = APIClient();
   // Translation item
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -66,16 +66,15 @@ const Predict = () => {
             });
           }
         }
-      }),
-      []
-  })
+      })
+  }, [])
 
   // Start uploading file, set state o pending,
   // Post to server
   function sendRequest() {
-    let file = file;
+    let files = file;
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append("file", files);
 
     apiClient.uploadFile(formData).then(
       (data) => {
@@ -110,7 +109,7 @@ const Predict = () => {
     setNoFileError(true);
     setUploadError(false);
 
-    var file = file;
+    // var file = file;
     sendRequest()
   }
 

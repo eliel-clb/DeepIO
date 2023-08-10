@@ -5,7 +5,7 @@ import { withTranslation, useTranslation } from 'react-i18next';
 import i18n from "i18next";
 
 const Home = () => {
-  const apiClient = new APIClient();
+  const apiClient = APIClient();
   const { t } = useTranslation();
 
   return (
