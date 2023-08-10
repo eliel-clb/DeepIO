@@ -1,11 +1,10 @@
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
-
+import env from "react-dotenv";
 // Obviously needs to get changed if the server port / address is changing
 
-var var_env = require('/app/var_env.json');
-var DOMAIN = var_env['DOMAIN']
-var BACKEND_PORT = var_env['BACKEND_PORT']
+
+var DOMAIN = env['DOMAIN']
+var BACKEND_PORT = env['BACKEND_PORT']
 
 const BASE_URI = 'http://' + DOMAIN + ':' + BACKEND_PORT.toString();
 

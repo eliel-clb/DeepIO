@@ -1,13 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { withRouter } from 'react-router';
 import './Queue.css';
 import APIClient from '../../Actions/apiClient';
-
+import {useNavigate} from 'react-router-dom';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 
 import i18n from "i18next";
-import { withTranslation } from 'react-i18next';
+import { withTranslation, useTranslation } from 'react-i18next';
 
 import moment from 'moment';
 
@@ -25,8 +25,8 @@ const Queue = () => {
   const [currentItemName, setCurrentItemName] = useState('');
   const [popupDeleteSuccess, setPopupDeleteSuccess] = useState(false);
 
-  const apiClient = new APIClient();
-  navigate = useNavigate();
+  const apiClient = APIClient();
+  const navigate = useNavigate();
   const { t } = useTranslation();
 
 
@@ -141,7 +141,7 @@ const Queue = () => {
     let timeRunning = format(difference);
     var isOwner = false;
 
-    if (userMail === email) {
+    if (userMail === item.user.email) {
       isOwner = true;
     }
 
