@@ -1,12 +1,12 @@
 # base image
-FROM node:12.2.0-alpine
+FROM node:18.17-alpine
 
 # set working directory
 WORKDIR /app
 
 COPY package.json .
 COPY package-lock.json .
-
+RUN npm install -g npm@9.8.1
 RUN npm install
 
 COPY . .

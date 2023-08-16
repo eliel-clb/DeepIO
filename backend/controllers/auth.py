@@ -6,6 +6,8 @@ from flask_jwt_extended import (create_access_token, create_refresh_token,
                                 get_jwt_identity, get_jwt) 
 import controllers.errors
 from datetime import datetime
+from bson import json_util, ObjectId
+import json
 
 
 # Try to find user in DB, check password against hash, generate tokens or send back error message
@@ -22,7 +24,10 @@ def authUser():
             refresh_token = create_refresh_token(identity=data)
             user['token'] = access_token
             user['refresh_token']= refresh_token
-            return jsonify({'ok': True, 'data': user}), 200
+            user.pop("_id")
+            data = json.loads(json_util.dumps(user))
+            # return jsonify({'ok': True, 'data': user.to_json()}), 200
+            return data, 200
         else:
             return jsonify({'ok': False, 'message': 'invalid username or password'}), 401
     else:

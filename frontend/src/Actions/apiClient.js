@@ -1,125 +1,90 @@
 import axios from 'axios';
-
+import env from "react-dotenv";
 // Obviously needs to get changed if the server port / address is changing
 
-var var_env = require('/app/var_env.json');
-var DOMAIN = var_env['DOMAIN']
-var BACKEND_PORT = var_env['BACKEND_PORT']
 
-const BASE_URI = 'http://'+DOMAIN+':'+BACKEND_PORT.toString();
+// var DOMAIN = env['DOMAIN']
+// var BACKEND_PORT = env['BACKEND_PORT']
+var DOMAIN = 'localhost'
+var BACKEND_PORT = '8002'
 
-// Client that is used in every server request
+const BASE_URI = 'http://' + DOMAIN + ':' + BACKEND_PORT.toString();
+
 const client = axios.create({
- baseURL: BASE_URI,
- json: true
+  baseURL: BASE_URI,
 });
 
-// Call perform function with method, route and (if needed, e.g. POST) data 
-class APIClient {
-  /*** ///  Maps to auth controller  /// ***/  
-  login(user) {
-    return this.perform('post', '/login', user);
-  }
- 
-  getAuth() {
-    return this.perform('get', '/hasAuth');
-  }
-   
-  logout() {
-    this.perform('delete', '/logoutAccessToken').then(() => {
-      console.log('done');
-    })
-  }
-  
-  refresh() {
-    return this.performRefresh('post', '/refresh');
-  }
+const APIClient = () => {
+  const getToken = () => localStorage.getItem('token');
 
-  /*** ///  Maps to user controller  /// ***/
-  createUser(newUser) {
-    return this.perform('post', '/user', newUser);
-  }
- 
-  getUser(user) {
-   return this.perform('get', '/user', user);
-  }
-  
-  updateUserHistory(predictionID) {
-    return this.perform('put', '/updateUserHistory', predictionID);
-  }
-  
-  removeFromUserHistory(ids) {
-    return this.perform('delete', '/removeFromUserHistory', ids);
-  }
-  
-  changeEmail(email) {
-    return this.perform('put', '/changeEmail', email);  
-  }
-  
-  checkPassword(oldPassword) {
-    return this.perform('post', '/checkPassword', oldPassword);  
-  }
-  
-  changePassword(newPassword) {
-    return this.perform('put', '/changePassword', newPassword);
-  }
+  const perform = async (method, resource, data) => {
+    const token = getToken();
+    const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
-  getUserDetails(email) {
-    return this.perform('get', '/user?email=' + email);
-  }
+    try {
+      const response = await client({
+        method,
+        url: resource,
+        data,
+        headers,
+      });
+      return response.data;
+    } catch (error) {
+      throw error.response ? error.response.data : error;
+    }
+  };
 
-  /*** ///  Maps to prediction controller  /// ***/
-  createPrediction(prediction) {
-    return this.perform('post', '/prediction', prediction);
-  }
-  
-  deletePrediction(predictionID) {
-    return this.perform('delete', '/prediction', predictionID)
-  }
+  const login = async (user) => perform('post', '/login', user);
+  const getAuth = async () => perform('get', '/hasAuth');
+  const logout = async () => {
+    await perform('delete', '/logoutAccessToken');
+    console.log('done');
+  };
+  const refresh = async () => perform('post', '/refresh');
 
-  /*** ///  Maps to queue controller  /// ***/
-  createQueueItem(newQueueItem) {
-    return this.perform('post', '/queue', newQueueItem);
-  }
-  
-  getQueue() {
-    return this.perform('get', '/queue');
-  }
-  
-  deleteQueueItem(queueItem) {
-    return this.perform('delete', '/queue', queueItem);
-  }
-  
-  /*** /// Upload /// ***/
-  uploadFile(file) {
-    return this.perform('post', '/upload', file);  
-    // Please not that this is NOT the final route, as it doesn't go to ODIN but just to the local server
-  }
+  const createUser = async (newUser) => perform('post', '/user', newUser);
+  const getUser = async (user) => perform('get', '/user', user);
+  const updateUserHistory = async (predictionID) => perform('put', '/updateUserHistory', predictionID);
+  const removeFromUserHistory = async (ids) => perform('delete', '/removeFromUserHistory', ids);
+  const changeEmail = async (email) => perform('put', '/changeEmail', email);
+  const checkPassword = async (oldPassword) => perform('post', '/checkPassword', oldPassword);
+  const changePassword = async (newPassword) => perform('put', '/changePassword', newPassword);
+  const getUserDetails = async (email) => perform('get', '/user', { params: { email } });
 
-  deleteFile(file) {
-    return this.perform('delete', '/upload', file);  
-    // Please not that this is NOT the final route, as it doesn't go to ODIN but just to the local server
-  }
-  
-  /*** /// Mail /// ***/
-  sendMail() {
-    return this.perform('get', '/mail');
-  }
-  
-  // Perform takes in the mehthod, route, data and creates a new client
-  // Also gets the token from localStorage and adds it to the header of the request
-  async perform (method, resource, data) {         
-    return client({
-      method,
-      url: resource,
-      data,
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`
-      }      
-    }).then(resp => {
-      return resp.data ? resp.data : [];
-    })
-   }
-}
+  const createPrediction = async (prediction) => perform('post', '/prediction', prediction);
+  const deletePrediction = async (predictionID) => perform('delete', `/prediction/${predictionID}`);
+
+  const createQueueItem = async (newQueueItem) => perform('post', '/queue', newQueueItem);
+  const getQueue = async () => perform('get', '/queue');
+  const deleteQueueItem = async (queueItem) => perform('delete', `/queue/${queueItem}`);
+
+  const uploadFile = async (file) => perform('post', '/upload', file);
+  const deleteFile = async (file) => perform('delete', '/upload', file);
+
+  const sendMail = async () => perform('get', '/mail');
+
+  return {
+    login,
+    getAuth,
+    logout,
+    refresh,
+    createUser,
+    getUser,
+    updateUserHistory,
+    removeFromUserHistory,
+    changeEmail,
+    checkPassword,
+    changePassword,
+    getUserDetails,
+    createPrediction,
+    deletePrediction,
+    createQueueItem,
+    getQueue,
+    deleteQueueItem,
+    uploadFile,
+    deleteFile,
+    sendMail,
+  };
+};
 
 export default APIClient;

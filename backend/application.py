@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
-from flask import Flask, render_template, request, url_for, session, flash, redirect, jsonify
+from flask import Flask
 import os
 from flask_pymongo import PyMongo
 import json
 from bson.objectid import ObjectId
 import datetime
-import threading
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from backConfig import BaseConfig

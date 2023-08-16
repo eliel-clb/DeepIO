@@ -7,11 +7,6 @@ from bson import ObjectId
 import numpy as np
 import collections
 import pandas as pd
-import pprint
-from os import listdir
-from os.path import isfile, join
-from bson.binary import Binary
-import pickle
 import datetime
 import os
 import sys
@@ -85,7 +80,7 @@ def load_salmon_file(file_path):
     df = df.set_index('name')
     df = df.T
     df_data = df.values
-    # df_data = normalize(np.log10(df_data + 1))
+    df_data = normalize(np.log10(df_data + 1))
     df = pd.DataFrame(data=df_data, columns=df.columns, index=['TPM'])
 
     return df
@@ -93,8 +88,8 @@ def load_salmon_file(file_path):
 
 def get_pred_data(db, pred_id):
     """
-    function that connect to the database and find the path of the data 
-    we need to make a prediction 
+    function that connect to the database and find the path of the data
+    we need to make a prediction
     """
     pred = db.predictions.find_one({'_id': ObjectId(pred_id)})
     pred_file_name = '/app/uploads/' + pred['storedAt']
@@ -132,7 +127,7 @@ def remove_from_queue(db, pred_id):
 
 def pred_with_treatement(pred_engine, pred_data):
     """
-    make predictions with a treatement applied and return the results 
+    make predictions with a treatement applied and return the results
     """
     simulation_result = {}
 
@@ -192,26 +187,15 @@ def deamon_loop():
 
     # connect to the local database
     try:
-        Mongo_uri = "mongodb://{}:{}@{}:{}/?authMechanism=DEFAULT&authSource={}".format(
-            os.environ['MONGO_USERNAME'], os.environ['MONGO_PASSWORD'],
-            "mongo_db", os.environ['MONGO_PORT'], os.environ['DATABASE_NAME']
-        )
-
-        client = MongoClient(Mongo_uri)
-        # client = MongoClient('mongodb', int(os.environ['MONGO_PORT']))
-        # client = MongoClient(host='deepio_mongo', 
-        #                      port=int(os.environ['MONGO_PORT']), 
-        #                      username=os.environ['MONGO_USERNAME'],
-        #                      password=os.environ['MONGO_PASSWORD'],
-        #                      authSource="admin")
-        print(client)
-        print(Mongo_uri)
-        dbname = os.environ['DATABASE_NAME']
-        db = client.dbname
+        # connect to the local database
+        connection = MongoClient(host = 'mongo_db', 
+                                 port = int(os.environ['MONGO_PORT']),
+                                 username = os.environ['MONGO_USERNAME'],
+                                 password = os.environ['MONGO_PASSWORD']
+                                 )
+        db = connection[os.environ['DATABASE_NAME']]
         pred_engine = Prediction_Engine()
-        # connection = MongoClient('mongodb', int(os.environ['MONGO_PORT']))
-        # db = connection[os.environ['DATABASE_NAME']]
-        # db.authenticate(os.environ['MONGO_USERNAME'],os.environ['MONGO_PASSWORD'] )
+
         while True:
             if db.queue.count_documents({}) > 0:
                 # get the oldest prediction

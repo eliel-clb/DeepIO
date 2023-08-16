@@ -28,6 +28,10 @@
   background-color: #b8cb1e;
 }
 
+.lightblue {
+  background-color: #f2fbfd;
+}
+
 .orange {
   background-color: #f26722;
 }
@@ -40,7 +44,7 @@
   font-size: 20pt;
   font-weight: 500;
   margin-right: 9vw;
-  color: #544b48;
+  color: #386090;
 }
 
 #brand-link .nav-link:hover {
@@ -48,7 +52,7 @@
 }
 
 #basic-navbar-nav .nav-link, #profile-navbar-nav .nav-link, #language-selector {
-  color: #544b48;
+  color: #386090;
   font-size: 13pt;
 }
 
@@ -64,7 +68,7 @@
 }
 
 .nav-link:hover {
-  border-bottom: 4px solid #c5c5c5 !important;
+  border-bottom: 4px solid  #386090 !important;
   outline: 0; 
 }
 
