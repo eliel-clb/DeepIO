@@ -177,4 +177,4 @@ const Register = (props) => {
 
 }
 
-export default withRouter(withTranslation()(Register));
+export default withTranslation()(Register);

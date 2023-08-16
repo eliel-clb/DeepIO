@@ -293,4 +293,4 @@ const Predict = () => {
     </div>
   )
 }
-export default withRouter(withTranslation()(Predict));
+export default withTranslation()(Predict);

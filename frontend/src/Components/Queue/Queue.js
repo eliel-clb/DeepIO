@@ -218,4 +218,4 @@ const Queue = () => {
   )
 }
 
-export default withRouter(withTranslation()(Queue));
+export default withTranslation()(Queue);

@@ -3,8 +3,10 @@ import env from "react-dotenv";
 // Obviously needs to get changed if the server port / address is changing
 
 
-var DOMAIN = env['DOMAIN']
-var BACKEND_PORT = env['BACKEND_PORT']
+// var DOMAIN = env['DOMAIN']
+// var BACKEND_PORT = env['BACKEND_PORT']
+var DOMAIN = 'localhost'
+var BACKEND_PORT = '8002'
 
 const BASE_URI = 'http://' + DOMAIN + ':' + BACKEND_PORT.toString();
 

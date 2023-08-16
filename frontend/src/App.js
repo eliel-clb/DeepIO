@@ -1,5 +1,5 @@
 import React, {Suspense} from 'react';
-import { Route, Switch, BrowserRouter as Router } from 'react-router-dom';
+import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
@@ -13,30 +13,28 @@ import Queue from './Components/Queue/Queue';
 import History from './Components/History/History';
 import Predict from './Components/Predict/Predict';
 
-function App() {
+const App = () => {
     return (
       <Router>
         <div className="App">
-	        <Suspense fallback={(<div>Loading</div>)}>
-            <div id='wrapper'>
-              <header className="App-header">
-    		        <div className='header-contents'>
-                  <Header />
-   		          </div>
-              </header>
-            
-             <Switch>
-               <Route path="/" exact component={Home} />
-               <Route path="/register" component={Register} />
-               <Route path="/profile" component={Profile} />
-               <Route path="/queue" component={Queue} />
-               <Route path="/predict" component={Predict} />
-               <Route path="/history" component={History} />
-               <Route path="/login" component={Login} />
-             </Switch>
-            
+          <header className="App-header">
+            <div className='header-contents'>
+              <Header />
             </div>
-        	</Suspense>
+          </header>
+          <main className="App-content">
+            <Suspense fallback={(<div>Loading</div>)}>
+              <Routes>
+                <Route path="/" exact element={<Home/>} />
+                <Route path="/register" element={<Register/>} />
+                <Route path="/profile" element={<Profile/>} />
+                <Route path="/queue" element={<Queue/>} />
+                <Route path="/predict" element={<Predict/>} />
+                <Route path="/history" element={<History/>} />
+                <Route path="/login" element={<Login/>} />
+              </Routes>
+            </Suspense>
+          </main>
         </div>
       </Router>
     );

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { withRouter } from 'react-router';
 import './Header.css';
 import APIClient from '../../Actions/apiClient';
 
@@ -32,7 +31,7 @@ const Header = () => {
   }, []
   )
 
-  const logout = (event) => {
+  const logOut = (event) => {
     apiClient.logout();
     setUserLoggedIn(false);
     navigate('/login');
@@ -51,7 +50,7 @@ const Header = () => {
     }
   }
 
-  var { message } = this.props.location.state || { message: '' }
+  var { message } = location.state || { message: '' }
 
 
   return (
@@ -125,7 +124,7 @@ const Header = () => {
             <NavDropdown title={t('header.profile')} id="basic-nav-dropdown" className={'mr-auto ' + (userIsLoggedIn ? '' : 'hidden')}>
               <NavDropdown.Item href="/profile">{t('header.showprofile')}</NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item onClick={logout()}>{t('header.showlogout')}</NavDropdown.Item>
+              <NavDropdown.Item onClick={logOut()}>{t('header.showlogout')}</NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>
@@ -139,4 +138,4 @@ const Header = () => {
 }
 
 
-export default withRouter(withTranslation()(Header));
+export default withTranslation()(Header);

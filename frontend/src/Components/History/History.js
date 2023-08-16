@@ -296,4 +296,4 @@ const History = () => {
   );
 };
 
-export default withRouter(withTranslation()(History));
+export default withTranslation()(History);
