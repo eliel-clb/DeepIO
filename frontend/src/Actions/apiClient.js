@@ -10,13 +10,14 @@ var BACKEND_PORT = '8002'
 
 const BASE_URI = 'http://' + DOMAIN + ':' + BACKEND_PORT.toString();
 
-const client = axios.create({
-  baseURL: BASE_URI,
-});
 
 const APIClient = () => {
-  const getToken = () => localStorage.getItem('token');
 
+  const client = axios.create({
+    baseURL: BASE_URI,
+  });
+
+  const getToken = () => localStorage.getItem('token');
   const perform = async (method, resource, data) => {
     const token = getToken();
     const headers = token ? { Authorization: `Bearer ${token}` } : {};
@@ -36,6 +37,7 @@ const APIClient = () => {
 
   const login = async (user) => perform('post', '/login', user);
   const getAuth = async () => perform('get', '/hasAuth');
+
   const logout = async () => {
     await perform('delete', '/logoutAccessToken');
     console.log('done');

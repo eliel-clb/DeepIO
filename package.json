@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "i18next-localstorage-backend": "^4.1.1"
+  }
+}

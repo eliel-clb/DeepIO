@@ -1,5 +1,5 @@
 #top-header {
-  padding-bottom: 10px!important;
+  padding-bottom: 10px !important;
   background-color: white;
 }
 
@@ -16,7 +16,7 @@
 .navbar {
   color: black;
   background-color: white;
-  border-bottom: 2px solid rgba(0,0,0,.5);
+  border-bottom: 2px solid rgba(0, 0, 0, .5);
   padding: .5rem 1.3rem 20px 1.3rem;
 }
 
@@ -51,7 +51,9 @@
   border-bottom: 4px solid transparent !important;
 }
 
-#basic-navbar-nav .nav-link, #profile-navbar-nav .nav-link, #language-selector {
+#basic-navbar-nav .nav-link,
+#profile-navbar-nav .nav-link,
+#language-selector {
   color: #386090;
   font-size: 13pt;
 }
@@ -68,11 +70,12 @@
 }
 
 .nav-link:hover {
-  border-bottom: 4px solid  #386090 !important;
-  outline: 0; 
+  border-bottom: 4px solid #386090 !important;
+  outline: 0;
 }
 
-#language-fr, #language-en {
+#language-fr,
+#language-en {
   display: inline-block;
 }
 
@@ -80,7 +83,8 @@
   margin-top: 4px;
 }
 
-.language-name, .language-flag {
+.language-name,
+.language-flag {
   float: left;
 }
 
@@ -109,7 +113,8 @@
   padding: 10px;
 }
 
-.banner-message-text, .banner-close {
+.banner-message-text,
+.banner-close {
   display: inline-block;
   line-height: 80px;
 }

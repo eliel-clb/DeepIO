@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import './Header.css';
 import APIClient from '../../Actions/apiClient';
 
 import Navbar from 'react-bootstrap/Navbar';
@@ -13,23 +12,28 @@ import { withTranslation, useTranslation } from 'react-i18next';
 import logo from '../../Static/Images/LOGOCLB.png';
 import flag_fr from '../../Static/Images/fr_flag_icon.png';
 import flag_gb from '../../Static/Images/uk_flag_icon.png';
-
+import './Header.css';
 
 const Header = () => {
   const [userIsLoggedIn, setUserLoggedIn] = useState(false);
   const [showBanner, setShowBanner] = useState(true);
-  const apiClient = APIClient;
+  const apiClient = new APIClient();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
 
-  useEffect(() => {
-    apiClient.getAuth().then((data) =>
-      setUserLoggedIn(true)
+  const getAuth = () => {
+    return apiClient.getAuth().then(
+      (data) => {
+        setUserLoggedIn(true)
+      }
     ).catch((err) => {
       console.log(err);
     })
-  }, []
-  )
+  };
+
+  useEffect(() => {
+    getAuth();
+  }, []);
 
   const logOut = (event) => {
     apiClient.logout();
@@ -56,24 +60,23 @@ const Header = () => {
   return (
     <div>
       <div id="top-header">
+        {/* <span className="lightblue"></span> */}
 
-      <span className="lightblue"></span>
-
-        {/* <span className="blue"></span>
+        <span className="blue"></span>
         <span className="yellow"></span>
         <span className="orange"></span>
         <span className="violet"></span>
         <span className="blue"></span>
         <span className="yellow"></span>
         <span className="orange"></span>
-        <span className="violet"></span> */}
+        <span className="violet"></span>
 
       </div>
       <Navbar variant="light" expand="lg">
-        <Navbar.Brand href="https://www.gustaveroussy.fr/">
+        <Navbar.Brand href="https://www.centreleonberard.fr/">
           <img
             src={logo}
-            className="d-inline-block align-top"
+            className="d-inline-block align-top logoclb"
             alt="Gustave Roussy"
           />
         </Navbar.Brand>
@@ -124,14 +127,14 @@ const Header = () => {
             <NavDropdown title={t('header.profile')} id="basic-nav-dropdown" className={'mr-auto ' + (userIsLoggedIn ? '' : 'hidden')}>
               <NavDropdown.Item href="/profile">{t('header.showprofile')}</NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item onClick={logOut()}>{t('header.showlogout')}</NavDropdown.Item>
+              <NavDropdown.Item onClick={logOut}>{t('header.showlogout')}</NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
       <div className={'banner ' + ((showBanner && message) ? '' : 'hidden')}>
         <p className="banner-message-text">{message}</p>
-        <span className="banner-close" onClick={closeBanner()}></span>
+        <span className="banner-close" onClick={closeBanner}></span>
       </div>
     </div>
   )

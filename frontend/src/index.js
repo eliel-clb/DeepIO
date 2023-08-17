@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import './i18n'; 
 import * as serviceWorker from './serviceWorker';
-import { BrowserRouter } from "react-router-dom"
+
 
 const root = ReactDOM.createRoot(document.getElementById("root"))
 
