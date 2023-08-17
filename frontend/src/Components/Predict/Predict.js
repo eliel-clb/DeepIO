@@ -27,7 +27,7 @@ const Predict = () => {
   const [noFileError, setNoFileError] = useState(false);
   const [uploadError, setUploadError] = useState(false);
   const [deleteError, setDeleteError] = useState(false);
-  const apiClient = APIClient();
+  const apiClient = new APIClient();
   // Translation item
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -51,23 +51,30 @@ const Predict = () => {
   // If there is none / it is blacklisted,
   // Push user to login, set message banner to appropriate message,
   // Store current location to redirect user back here after successful login
+  const fetchData = async () => {
+    try {
+      const authData = await apiClient.getAuth();
+      setUserMail(authData.logged_in_as.email);
+    } catch (error) {
+      console.error('Something bad happened');
+      console.error(error);
+
+      if (error.response && error.response.status === 401) {
+        navigate('/login', {
+          state: {
+            from: 'Predict',
+            message: i18n.t('messages.notauthorized'),
+          },
+        });
+      } else {
+        console.log(error);
+      }
+    }
+  };
+
   useEffect(() => {
-    apiClient.getAuth().then((data) => {
-      setUserMail(data.logged_in_as.email)
-    })
-      .catch((err) => {
-        if (err.response.status) {
-          if (err.response.status === 401) {
-            navigate("/login", {
-              state: {
-                from: 'Predict',
-                message: i18n.t('messages.notauthorized')
-              }
-            });
-          }
-        }
-      })
-  }, [])
+    fetchData();
+  }, []);
 
   // Start uploading file, set state o pending,
   // Post to server
@@ -191,11 +198,11 @@ const Predict = () => {
         <div className="new-prediction-form">
           <div className="input-left-side">
             <Dropzone
-              onDrop={onDrop()}
+              onDrop={onDrop}
               disabled={!isEmpty(file)}
             >
               {({ getRootProps, getInputProps }) => (
-                <section className={'container ' + (this.state.dropzoneIsLocked ? 'hidden' : '')}>
+                <section className={'container ' + (dropzoneIsLocked ? 'hidden' : '')}>
                   <div {...getRootProps({ className: 'dropzone' })}>
                     <input {...getInputProps()} />
                     <p>{t('prediction.dropzonehelper')}</p>
@@ -205,8 +212,8 @@ const Predict = () => {
             </Dropzone>
 
             <div className={'preview-file ' + (fileIsHidden ? 'hidden' : '')}>
-              <p>{this.state.file.name}
-                <span className={'remove-file ' + (successfulUpload ? 'hidden' : '')} onClick={removeFile()}></span>
+              <p>{file.name}
+                <span className={'remove-file ' + (successfulUpload ? 'hidden' : '')} onClick={removeFile}></span>
               </p>
             </div>
 
@@ -248,7 +255,7 @@ const Predict = () => {
 
             <Button variant="danger"
               className={'upload-button ' + ((successfulUpload) ? '' : 'hidden')}
-              onClick={deleteFile()}
+              onClick={deleteFile}
             >
               {t('prediction.deletefile')}
             </Button>
@@ -285,7 +292,7 @@ const Predict = () => {
 
         <span className="text-muted prediction-info">{t('prediction.submitpredictioninfo')}</span>
         <br />
-        <Button className={'btn btn-primary btn-prediction ' + (successfulUpload ? '' : 'disabled')} onClick={startPrediction()}>
+        <Button className={'btn btn-primary btn-prediction ' + (successfulUpload ? '' : 'disabled')} onClick={startPrediction}>
           {t('prediction.submitprediction')}
         </Button>
 

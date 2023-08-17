@@ -32,30 +32,33 @@ const History = () => {
   // If there is none / it is blacklisted,
   // Push user to login, set message banner to appropriate message,
   // Store current location to redirect user back here after successful login
-  useEffect(() => {
-    apiClient
-      .getAuth()
-      .then((data) => {
-        apiClient.getUserDetails(data.logged_in_as.email).then((data) => {
-          console.log(data);
-          setIsFetchingData(false);
-          setProfile(data);
-          setHistory(data.submittedJobs);
+  const fetchData = async () => {
+    try {
+      const authData = await apiClient.getAuth();
+      const userDetails = await apiClient.getUserDetails(authData.logged_in_as.email);
+
+      console.log(userDetails);
+      setIsFetchingData(false);
+      setProfile(userDetails);
+      setHistory(userDetails.submittedJobs);
+    } catch (error) {
+      console.error('Something bad happened');
+      console.error(error);
+
+      if (error.response && error.response.status === 401) {
+        navigate('/login', {
+          state: {
+            from: 'History',
+            message: i18n.t('messages.notauthorized'),
+          },
         });
-      })
-      .catch((err) => {
-        if (err.response.status) {
-          if (err.response.status === 401) {
-            navigate("/login", {
-              state: {
-                from: "History",
-                message: i18n.t("messages.notauthorized"),
-              },
-            });
-          }
-        }
-      });
-  });
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   // Filter object array
   // Return item if value at specified key includes letter(s)
@@ -260,8 +263,8 @@ const History = () => {
   if (!isFetchingData) {
     var historyEntries = history;
     historyEntries = historyEntries.reverse();
-    var tabs = historyEntries.map(createTabs());
-    var cols = historyEntries.map(createCols());
+    var tabs = historyEntries.map(createTabs);
+    var cols = historyEntries.map(createCols);
   }
 
   return (

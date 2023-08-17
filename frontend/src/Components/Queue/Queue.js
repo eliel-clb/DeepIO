@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { withRouter } from 'react-router';
 import './Queue.css';
 import APIClient from '../../Actions/apiClient';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 
@@ -34,31 +34,35 @@ const Queue = () => {
   // If there is none / it is blacklisted,
   // Push user to login, set message banner to appropriate message,
   // Store current location to redirect user back here after successful login
+  const fetchData = async () => {
+    try {
+      const authData = await apiClient.getAuth();
+      setUserMail(authData.logged_in_as.email);
+
+      const queueData = await apiClient.getQueue();
+      setQueue(queueData);
+      setIsFetchingData(false);
+      if (queueData.length) {
+        setEntriesExist(true);
+      }
+    } catch (error) {
+      console.error('Something bad happened');
+      console.error(error);
+
+      if (error.response && error.response.status === 401) {
+        navigate('/login', {
+          state: {
+            from: 'Queue',
+            message: i18n.t('messages.notauthorized'),
+          },
+        });
+      }
+    }
+  };
+
   useEffect(() => {
-    apiClient.getAuth().then((data) => {
-      setUserMail(data.logged_in_as.email)
-    })
-      .then((data) =>
-        apiClient.getQueue().then((data) => {
-          setQueue(data);
-          setIsFetchingData(false);
-          if (data.length) {
-            setEntriesExist(true)
-          }
-        }).catch((err) => { })
-      ).catch((err) => {
-        if (err.response.status) {
-          if (err.response.status === 401) {
-            navigate("/login", {
-              state: {
-                from: 'Queue',
-                message: i18n.t('messages.notauthorized')
-              }
-            });
-          }
-        }
-      })
-  }, [])
+    fetchData();
+  }, []);
 
   // The popup is for the user to confirm before a prediction is deleted
   // Opens a hidden element, remembers the row in the table and the item name
@@ -168,7 +172,7 @@ const Queue = () => {
       <div className={'delete-confirm ' + (popUpIsOpen ? 'show-popup' : '')}>
         <div className='popup-header'>
           <h4>{t('queue.popupdeleteheader')} {currentItemName}</h4>
-          <span className='close-popup' onClick={cancelPopup()}></span>
+          <span className='close-popup' onClick={cancelPopup}></span>
         </div>
         <hr />
         <div className='popup-body'>
@@ -178,8 +182,8 @@ const Queue = () => {
         </div>
         <hr />
         <div className='popup-footer'>
-          <Button className="cancel-delete-button" onClick={cancelPopup()}>{t('queue.popupdeletecancel')}</Button>
-          <Button className="confirm-delete-button" onClick={confirmPopup()}>{t('queue.popupdeleteconfirm')}</Button>
+          <Button className="cancel-delete-button" onClick={cancelPopup}>{t('queue.popupdeletecancel')}</Button>
+          <Button className="confirm-delete-button" onClick={confirmPopup}>{t('queue.popupdeleteconfirm')}</Button>
         </div>
       </div>
       <div className={'black-overlay ' + (popUpIsOpen ? '' : 'hidden')}></div>

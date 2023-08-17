@@ -74,7 +74,7 @@ const Login = () => {
     <div className="container">
       <div className="container-fluid">
 
-        <Form className='log-in-form col-8 col-centered' onSubmit={onSubmit()}>
+        <Form className='log-in-form col-8 col-centered' onSubmit={onSubmit}>
 
           <Form.Group controlId="formBasicEmail">
             <Form.Label>{t('login.email')}</Form.Label>
@@ -120,7 +120,7 @@ const Login = () => {
         </Form>
         <a href='/register'>{t('login.registerlink')}</a>
         <br /><hr />
-        <a onClick={sendMail()}>{t('login.forgotpasswordlink')}</a>
+        <a onClick={sendMail}>{t('login.forgotpasswordlink')}</a>
 
       </div>
     </div>

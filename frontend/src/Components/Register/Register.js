@@ -97,7 +97,7 @@ const Register = (props) => {
   return (
     <div className="container">
       <div className="container-fluid">
-        <Form className='sign-up-form col-8 col-centered' onSubmit={onSubmit()}>
+        <Form className='sign-up-form col-8 col-centered' onSubmit={onSubmit}>
           <Form.Group>
             <Form.Label>{t('register.emailaddress')}</Form.Label>
             <Form.Control
@@ -145,7 +145,7 @@ const Register = (props) => {
               placeholder={t('register.repeatpasswordplaceholder')}
               name='passwordRepeat'
               value={passwordRepeat}
-              onChange={handleInputChange}
+              onChange={e => handleInputChange(e)}
               required
             />
 

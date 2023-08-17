@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "@babel/core": "^7.22.10",
+    "css-loader": "^6.8.1",
     "i18next-localstorage-backend": "^4.1.1"
   }
 }

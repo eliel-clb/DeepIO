@@ -60,17 +60,15 @@ const Header = () => {
   return (
     <div>
       <div id="top-header">
-        {/* <span className="lightblue"></span> */}
 
-        <span className="blue"></span>
-        <span className="yellow"></span>
-        <span className="orange"></span>
-        <span className="violet"></span>
-        <span className="blue"></span>
-        <span className="yellow"></span>
-        <span className="orange"></span>
-        <span className="violet"></span>
-
+        <span className={"blue"}></span>
+        <span className={"yellow"}></span>
+        <span className={"orange"}></span>
+        <span className={"violet"}></span>
+        <span className={"blue"}></span>
+        <span className={"yellow"}></span>
+        <span className={"orange"}></span>
+        <span className={"violet"}></span>
       </div>
       <Navbar variant="light" expand="lg">
         <Navbar.Brand href="https://www.centreleonberard.fr/">
@@ -124,11 +122,17 @@ const Header = () => {
         <Navbar.Collapse id="profile-navbar-nav" className='justify-content-end'>
           <Nav >
             <Nav.Link href="/login" className={'mr-auto ' + (userIsLoggedIn ? 'hidden' : '')}>{t('header.showlogin')}</Nav.Link>
-            <NavDropdown title={t('header.profile')} id="basic-nav-dropdown" className={'mr-auto ' + (userIsLoggedIn ? '' : 'hidden')}>
-              <NavDropdown.Item href="/profile">{t('header.showprofile')}</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item onClick={logOut}>{t('header.showlogout')}</NavDropdown.Item>
-            </NavDropdown>
+            {
+              userIsLoggedIn ?
+
+                <NavDropdown title={t('header.profile')} id="basic-nav-dropdown" className={'mr-auto ' + (userIsLoggedIn ? '' : 'hidden')}>
+                  <NavDropdown.Item href="/profile">{t('header.showprofile')}</NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item onClick={logOut}>{t('header.showlogout')}</NavDropdown.Item>
+                </NavDropdown> :
+                <>
+                </>
+            }
           </Nav>
         </Navbar.Collapse>
       </Navbar>

@@ -35,7 +35,7 @@ const Profile = () => {
   const [passwordChangeSuccess, setPasswordChangeSuccess] = useState(false);
   const [emailChangeSuccess, setEmailChangeSuccess] = useState(false);
 
-  const apiClient = APIClient();
+  const apiClient = new APIClient();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -52,6 +52,7 @@ const Profile = () => {
         setProfile(data)
       })
     }).catch((err) => {
+      console.log(err);
       if (err.response.status) {
         if (err.response.status === 401) {
 
@@ -184,10 +185,10 @@ const Profile = () => {
 
         <div className="profile-settings-box">
           <div className={'change-profile-header ' + (isEmailOpen ? 'active' : '')}>
-            <div className="change-profile-link" onClick={openChangeEmail()}>{t('profile.changemail')}</div>
+            <div className="change-profile-link" onClick={openChangeEmail}>{t('profile.changemail')}</div>
           </div>
           <div className={'change-setting-container ' + (isEmailOpen ? 'col' : 'hidden')}>
-            <Form className='email-change-form col-8 col-centered' onSubmit={onSubmitEmail()}>
+            <Form className='email-change-form col-8 col-centered' onSubmit={onSubmitEmail}>
               <Form.Group>
                 <Form.Label>{t('profile.emailinput')}</Form.Label>
                 <Form.Control
@@ -221,10 +222,10 @@ const Profile = () => {
 
         <div className="profile-settings-box">
           <div className={'change-profile-header ' + (isPasswordOpen ? 'active' : '')}>
-            <div className="change-profile-link" onClick={openChangePassword()}>{t('profile.changepassword')}</div>
+            <div className="change-profile-link" onClick={openChangePassword}>{t('profile.changepassword')}</div>
           </div>
           <div className={'change-setting-container ' + (isPasswordOpen ? 'col' : 'hidden')}>
-            <Form className='email-change-form col-8 col-centered' onSubmit={onSubmitPassword()}>
+            <Form className='email-change-form col-8 col-centered' onSubmit={onSubmitPassword}>
               <Form.Group>
                 <Form.Label>{t('profile.oldpassword')}</Form.Label>
                 <Form.Control
